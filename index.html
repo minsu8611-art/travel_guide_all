@@ -117,7 +117,9 @@ const RCOLORS={"일본": "#c0392b", "동남아·대만": "#27ae60", "유럽·아
 const REMOJI={"일본": "🇯🇵", "동남아·대만": "🌏", "유럽·아프리카": "🇪🇺", "중국·홍콩": "🇨🇳", "중앙아시아·서남아": "🌄", "미주·하와이·캐나다·중남미": "🌎", "호주·뉴질랜드": "🦘", "남태평양": "🏝"};
 const REGION_ORDER=["일본", "동남아·대만", "유럽·아프리카", "중국·홍콩", "중앙아시아·서남아", "미주·하와이·캐나다·중남미", "호주·뉴질랜드", "남태평양"];
 
-const VRX=/\d[\d,.~]*\s*(원|만원|엔|위안|바트|동|페소|링깃|루피아|달러|유로|파운드)|[$€£¥₩]\s?\d|\b(USD|AUD|NZD|CAD|JOD|HKD|TWD|SGD|THB|MYR|IDR|CHF|EUR|GBP|JPY)\s?\$?\d|\d\s?(USD|AUD|NZD|CAD|JOD|HKD|TWD|SGD|THB|MYR|IDR|CHF|EUR|GBP|JPY)\b|무비자|비자|ESTA|eTA|\bETA\b|ETIAS|EES|직항|취항|운항|환율|≈|요금|입장료|관광세|출국세|여행경보|20\d\d\.\d/;
+const VRX=/무비자|비자|ESTA|eTA|\bETA\b|NZeTA|ETIAS|EES|MDAC|TDAC|eTravel|G-CNMI|입국카드|여권 유효|관광세|출국세|방문세|숙박세|환경세|그린세|입산료|여행경보|여행금지|출국권고|직항|취항|운항|항공사|경유|\d[\d,.~]*\s*(원|만원|엔|위안|바트|동|페소|링깃|루피아|루피|달러|유로|파운드|코루나|포린트|라리|킵)|[$€£¥₩]\s?\d|\b(USD|AUD|NZD|CAD|JOD|HKD|TWD|SGD|THB|MYR|IDR|CHF|EUR|GBP|JPY|AED|MOP|NT\$|RM)\s?\$?\d|\d\s?(USD|AUD|NZD|CAD|JOD|HKD|TWD|SGD|THB|MYR|IDR|CHF|EUR|GBP|JPY|AED|MOP)\b|요금|입장료|입장 무료|환율|20\d\d[.년]/; // tools/checklist.py의 변동 분류와 동일하게 유지
+const UPDATED='2026-10-07'; // 변동 정보 최종 점검일 — 정기 점검 시 갱신
+const UPDATED_KO=(d=>{const[y,m,dd]=d.split('-').map(Number);return`${y}년 ${m}월 ${dd}일`})(UPDATED);
 const VTIP='요금·비자·항공편 등 수시로 바뀌는 정보입니다. 출발 전 재확인하세요.';
 function vb(t){return VRX.test(String(t))?`<span class="vchg" title="${VTIP}">변동</span>`:'';}
 function rc(r){for(const k of Object.keys(RCOLORS)){if(r===k||r.includes(k)||k.includes(r))return RCOLORS[k];}return'#555';}
@@ -179,7 +181,7 @@ function showCity(name){
         </button>
       </div>
     </div>
-    <div class="vnote"><span class="vchg" style="margin:0 4px 0 0">변동</span> 표시는 요금·비자·항공편·환율 등 수시로 바뀌는 정보입니다. 출발 전 반드시 재확인하세요. (2026년 10월 기준)</div>
+    <div class="vnote"><span class="vchg" style="margin:0 4px 0 0">변동</span> 표시는 요금·비자·항공편·환율 등 수시로 바뀌는 정보입니다. 출발 전 반드시 재확인하세요. (변동 정보 최종 점검: ${UPDATED_KO})</div>
     ${panel('①','#1c1c2e','해외여행 공통 준비사항',comBody,false)}
     ${reg?panel('②',color,`${emoji} ${regKey} 지역 안내`,regBody,false):''}
     ${panel('③',color,`${name} 핵심 명소 & 상세 가이드`,cityBody,true)}
@@ -295,7 +297,7 @@ function generateCityHTML(cityName){
     +'<span style="background:rgba(255,255,255,.18);padding:4px 10px;border-radius:12px;font-size:12px">✈ '+city.flight+'</span>'
     +'</div></div>'
     +'<div style="background:#fff8f0;border:1px solid #e8d5b0;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#7a5c00">'
-    +'⚠️ <b>2026년 10월 기준 자료입니다.</b> '+VB+' 표시는 요금·비자·항공편 등 수시로 바뀌는 정보이니 출발 전 반드시 재확인하세요.</div>'
+    +'⚠️ <b>변동 정보 최종 점검: '+UPDATED_KO+'</b> '+VB+' 표시는 요금·비자·항공편 등 수시로 바뀌는 정보이니 출발 전 반드시 재확인하세요.</div>'
     +mPanel('①','#1c1c2e','해외여행 공통 준비사항',comC)
     +(reg?mPanel('②',color,emoji+' '+regKey+' 지역 안내',regC):'')
     +mPanel('③',color,cityName+' 핵심 명소 & 상세 가이드',cityC)
